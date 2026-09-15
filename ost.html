@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Soundtrack - Peko & The 5 Explorers</title>
+
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* UTAMA CONTAINER PLAYER */
+    .player-section {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* KARTU PLAYER UTAMA (ATAS) */
+    .main-player-card {
+      max-width: 650px;
+      width: 100%;
+      margin: 0 auto;
+      background: rgba(18, 30, 25, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 28px;
+      padding: 30px 20px 25px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    }
+
+    /* LINGKARAN PLAYER BERSINAR */
+    .circle-display {
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      border: 2px solid #ebad22;
+      box-shadow: 0 0 25px rgba(235, 173, 34, 0.35), inset 0 0 20px rgba(235, 173, 34, 0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      margin-bottom: 25px;
+      position: relative;
+      background: rgba(11, 19, 14, 0.5);
+    }
+
+    .circle-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #ebad22;
+      margin-bottom: 6px;
+      line-height: 1.2;
+    }
+
+    .circle-artist {
+      font-size: 0.78rem;
+      color: #a0aec0;
+      font-weight: 500;
+    }
+
+    /* VISUALIZER CANVAS TITIK-TITIK */
+    .waveform-box {
+      width: 100%;
+      height: 75px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+    }
+
+    #dots-canvas {
+      width: 90%;
+      height: 100%;
+    }
+
+    /* SEEKBAR / PROGRESS BAR */
+    .progress-container {
+      width: 90%;
+      margin-bottom: 22px;
+    }
+
+    .time-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: #888;
+      margin-top: 6px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      background: #ebad22;
+      border-radius: 4px;
+      transition: width 0.1s linear;
+    }
+
+    /* KONTROL TOMBOL PLAYER */
+    .player-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 22px;
+      width: 100%;
+    }
+
+    .ctrl-btn {
+      background: none;
+      border: none;
+      color: #888;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .ctrl-btn:hover {
+      color: #ebad22;
+      transform: scale(1.1);
+    }
+
+    .ctrl-btn.active-mode {
+      color: #ebad22;
+    }
+
+    .play-main-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #ebad22;
+      color: #0b130e;
+      border: none;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 18px rgba(235, 173, 34, 0.5);
+      transition: all 0.2s ease;
+    }
+
+    .play-main-btn:hover {
+      background: #f5bc33;
+      transform: scale(1.08);
+      box-shadow: 0 0 25px rgba(235, 173, 34, 0.7);
+    }
+
+    /* GRID LAGU DI BAWAH */
+    .songs-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      width: 100%;
+    }
+
+    .song-card {
+      background: rgba(18, 30, 25, 0.75);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .song-card:hover {
+      border-color: rgba(235, 173, 34, 0.5);
+      transform: translateY(-3px);
+      background: rgba(22, 38, 31, 0.85);
+    }
+
+    .song-card.active {
+      border: 1.5px solid #ebad22;
+      box-shadow: 0 0 15px rgba(235, 173, 34, 0.25);
+      background: rgba(22, 38, 31, 0.9);
+    }
+
+    .song-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .song-category {
+      font-size: 0.62rem;
+      font-weight: 800;
+      color: #ebad22;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .song-icon {
+      font-size: 0.75rem;
+      color: #666;
+    }
+
+    .song-info {
+      margin-bottom: 15px;
+    }
+
+    .song-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 4px;
+      line-height: 1.2;
+    }
+
+    .song-artist {
+      font-size: 0.7rem;
+      color: #a0aec0;
+    }
+
+    .song-play-mini {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #ebad22;
+      color: #0b130e;
+      border: none;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .song-card:hover .song-play-mini {
+      transform: scale(1.1);
+      background: #f5bc33;
+    }
+
+    @media (max-width: 768px) {
+      .circle-display {
+        width: 190px;
+        height: 190px;
+      }
+      .circle-title {
+        font-size: 0.95rem;
+      }
+      .songs-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .song-card {
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER NAVBAR -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <span class="title-main">PEKO</span>
+        <span class="title-sub">& THE 5 EXPLORERS</span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="cover.html">HOME</a></li>
+        <li><a href="about.html">ABOUT FILM</a></li>
+        <li><a href="ost.html" class="active">SOUNDTRACK</a></li>
+        <li><a href="character.html">CHARACTERS</a></li>
+        <li><a href="gallery.html">GALLERY</a></li>
+      </ul>
+      <div class="search-icon">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </div>
+    </nav>
+  </header>
+
+  <!-- KONTEN UTAMA PLAYER -->
+  <div class="container">
+    <h1 class="page-title">THE SOUNDTRACK</h1>
+    <p class="page-subtitle">Dengar lagu & musik latar petualangan Peko</p>
+
+    <div class="player-section">
+      
+      <!-- PLAYER CARD UTAMA (ATAS) -->
+      <div class="main-player-card">
+        
+        <!-- Lingkaran Pemutar -->
+        <div class="circle-display">
+          <div class="circle-title" id="current-title">Hikari no Signal</div>
+          <div class="circle-artist" id="current-artist">Kis-My-Ft2</div>
+        </div>
+
+        <!-- Waveform Titik-Titik (Canvas Visualizer) -->
+        <div class="waveform-box">
+          <canvas id="dots-canvas"></canvas>
+        </div>
+
+        <!-- Progress Bar / Timeline -->
+        <div class="progress-container">
+          <div class="progress-bar" id="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+          <div class="time-labels">
+            <span id="current-time">0:00</span>
+            <span id="duration-time">0:00</span>
+          </div>
+        </div>
+
+        <!-- Tombol Kontrol -->
+        <div class="player-controls">
+          <button class="ctrl-btn active-mode" title="Shuffle"><i class="fa-solid fa-shuffle"></i></button>
+          <button class="ctrl-btn" id="prev-btn" title="Sebelumnya"><i class="fa-solid fa-backward-step"></i></button>
+          <button class="play-main-btn" id="main-play-btn" title="Play/Pause">
+            <i class="fa-solid fa-play" id="main-play-icon"></i>
+          </button>
+          <button class="ctrl-btn" id="next-btn" title="Berikutnya"><i class="fa-solid fa-forward-step"></i></button>
+          <button class="ctrl-btn" title="Playlist"><i class="fa-solid fa-music"></i></button>
+        </div>
+
+      </div>
+
+      <!-- GRID 4 LAGU (BAWAH) -->
+      <div class="songs-grid">
+        
+        <!-- 1. OPENING SONG -->
+        <div class="song-card" data-index="0">
+          <div class="song-card-header">
+            <span class="song-category">OPENING SONG</span>
+            <i class="fa-solid fa-microphone song-icon"></i>
+          </div>
+          <div class="song-info">
+            <div class="song-title">Yume wo Kanaete Doraemon</div>
+            <div class="song-artist">Mao</div>
+          </div>
+          <button class="song-play-mini"><i class="fa-solid fa-play"></i></button>
+        </div>
+
+        <!-- 2. INSERT SONG -->
+        <div class="song-card" data-index="1">
+          <div class="song-card-header">
+            <span class="song-category">INSERT SONG</span>
+            <i class="fa-solid fa-microphone song-icon"></i>
+          </div>
+          <div class="song-info">
+            <div class="song-title">Tomodachi</div>
+            <div class="song-artist">Subaru Kimura</div>
+          </div>
+          <button class="song-play-mini"><i class="fa-solid fa-play"></i></button>
+        </div>
+
+        <!-- 3. BACKGROUND MUSIC -->
+        <div class="song-card" data-index="2">
+          <div class="song-card-header">
+            <span class="song-category">BACKGROUND MUSIC</span>
+            <i class="fa-solid fa-music song-icon"></i>
+          </div>
+          <div class="song-info">
+            <div class="song-title">Peko's Promise</div>
+            <div class="song-artist">Kan Sawada</div>
+          </div>
+          <button class="song-play-mini"><i class="fa-solid fa-play"></i></button>
+        </div>
+
+        <!-- 4. ENDING SONG (Default Active) -->
+        <div class="song-card active" data-index="3">
+          <div class="song-card-header">
+            <span class="song-category">ENDING SONG</span>
+            <i class="fa-solid fa-microphone song-icon"></i>
+          </div>
+          <div class="song-info">
+            <div class="song-title">Hikari no Signal</div>
+            <div class="song-artist">Kis-My-Ft2</div>
+          </div>
+          <button class="song-play-mini"><i class="fa-solid fa-play"></i></button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const songData = [
+      { 
+        title: "Yume wo Kanaete Doraemon", 
+        artist: "Mao", 
+        src: "mp3/Yume Wo kanaete.mpeg" 
+      },
+      { 
+        title: "Tomodachi", 
+        artist: "Subaru Kimura", 
+        src: "mp3/Tomodachi.mpeg" 
+      },
+      { 
+        title: "Peko's Promise", 
+        artist: "Kan Sawada", 
+        src: "mp3/Pekos Promise.mpeg" 
+      },
+      { 
+        title: "Hikari no Signal", 
+        artist: "Kis-My-Ft2", 
+        src: "mp3/Kis-My-Ft2.mpeg" 
+      }
+    ];
+
+    let currentIndex = 3;
+    let isPlaying = false;
+
+    const audioPlayer = new Audio();
+    audioPlayer.crossOrigin = "anonymous";
+
+    const currentTitle = document.getElementById('current-title');
+    const currentArtist = document.getElementById('current-artist');
+    const currentTimeEl = document.getElementById('current-time');
+    const durationTimeEl = document.getElementById('duration-time');
+    const progressFill = document.getElementById('progress-fill');
+    const progressBar = document.getElementById('progress-bar');
+    const mainPlayBtn = document.getElementById('main-play-btn');
+    const mainPlayIcon = document.getElementById('main-play-icon');
+    const songCards = document.querySelectorAll('.song-card');
+
+    /* =========================================
+       WEB AUDIO API & FREQUENCY ANALYZER
+       ========================================= */
+    let audioCtx, analyser, source;
+    let dataArray;
+
+    function initAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 256; 
+        
+        try {
+          source = audioCtx.createMediaElementSource(audioPlayer);
+          source.connect(analyser);
+          analyser.connect(audioCtx.destination);
+        } catch (e) {
+          console.log("Web Audio Source initialized.");
+        }
+
+        dataArray = new Uint8Array(analyser.frequencyBinCount);
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    /* =========================================
+       CANVAS ANIMASI VISUALIZER TITIK-TITIK
+       ========================================= */
+    const canvas = document.getElementById('dots-canvas');
+    const ctx = canvas.getContext('2d');
+    let phase = 0;
+
+    function resizeCanvas() {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function drawDottedWave() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const width = canvas.width;
+      const height = canvas.height;
+      const centerY = height / 2;
+
+      const numLayers = 14;       /* Tumpukan layer titik */
+      const dotsPerLine = 85;     /* Jumlah titik horizontal */
+      const step = width / dotsPerLine;
+
+      // Ambil frekuensi audio jika lagu sedang dimainkan
+      if (analyser && isPlaying && dataArray) {
+        analyser.getByteFrequencyData(dataArray);
+      }
+
+      ctx.fillStyle = '#ebad22';
+
+      for (let l = 0; l < numLayers; l++) {
+        const layerRatio = (l - numLayers / 2) / (numLayers / 2);
+        const layerOpacity = 0.25 + (1 - Math.abs(layerRatio)) * 0.75;
+
+        for (let i = 0; i <= dotsPerLine; i++) {
+          const x = i * step;
+          const nx = i / dotsPerLine;
+          
+          // Kurva envelope agar gelombang melengkung halus di tengah
+          const envelope = Math.sin(nx * Math.PI);
+
+          // Ambil frekuensi audio sesuai posisi titik
+          let freqBounce = 0;
+          if (isPlaying && dataArray) {
+            const sampleIndex = Math.floor(nx * (dataArray.length * 0.7)); 
+            freqBounce = (dataArray[sampleIndex] / 255) * 32;
+          }
+
+          const amp = (freqBounce + 2) * envelope;
+          const wave = Math.sin(nx * Math.PI * 3.5 + phase + l * 0.15) * 0.7 +
+                       Math.sin(nx * Math.PI * 1.5 - phase * 0.8) * 0.3;
+
+          const yOffset = layerRatio * 12 * envelope;
+          const y = centerY + yOffset + (wave * amp);
+
+          ctx.globalAlpha = layerOpacity * (0.3 + 0.7 * envelope);
+          ctx.beginPath();
+          ctx.arc(x, y, 1.15, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      if (isPlaying) {
+        phase += 0.05;
+      }
+
+      requestAnimationFrame(drawDottedWave);
+    }
+    drawDottedWave();
+
+    /* =========================================
+       LOGIKA PEMUTAR AUDIO
+       ========================================= */
+    function loadSong(index) {
+      currentIndex = index;
+      const song = songData[index];
+      
+      currentTitle.textContent = song.title;
+      currentArtist.textContent = song.artist;
+      audioPlayer.src = song.src;
+
+      songCards.forEach((card, idx) => {
+        if(idx === index) {
+          card.classList.add('active');
+          card.querySelector('.song-play-mini i').className = isPlaying ? "fa-solid fa-pause" : "fa-solid fa-play";
+        } else {
+          card.classList.remove('active');
+          card.querySelector('.song-play-mini i').className = "fa-solid fa-play";
+        }
+      });
+    }
+
+    function formatTime(sec) {
+      if (isNaN(sec)) return "0:00";
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    function togglePlay() {
+      initAudioContext();
+
+      if (!audioPlayer.src || audioPlayer.src.endsWith('/')) {
+        loadSong(currentIndex);
+      }
+
+      if (isPlaying) {
+        audioPlayer.pause();
+      } else {
+        audioPlayer.play().catch(err => {
+          console.log("Pastikan file audio tersedia:", audioPlayer.src);
+        });
+      }
+    }
+
+    audioPlayer.addEventListener('play', () => {
+      isPlaying = true;
+      mainPlayIcon.className = "fa-solid fa-pause";
+      songCards[currentIndex].querySelector('.song-play-mini i').className = "fa-solid fa-pause";
+    });
+
+    audioPlayer.addEventListener('pause', () => {
+      isPlaying = false;
+      mainPlayIcon.className = "fa-solid fa-play";
+      songCards[currentIndex].querySelector('.song-play-mini i').className = "fa-solid fa-play";
+    });
+
+    audioPlayer.addEventListener('timeupdate', () => {
+      const curTime = audioPlayer.currentTime;
+      const durTime = audioPlayer.duration;
+
+      currentTimeEl.textContent = formatTime(curTime);
+      durationTimeEl.textContent = formatTime(durTime);
+
+      if (durTime) {
+        const percent = (curTime / durTime) * 100;
+        progressFill.style.width = `${percent}%`;
+      }
+    });
+
+    progressBar.addEventListener('click', (e) => {
+      const width = progressBar.clientWidth;
+      const clickX = e.offsetX;
+      const duration = audioPlayer.duration;
+
+      if (duration) {
+        audioPlayer.currentTime = (clickX / width) * duration;
+      }
+    });
+
+    audioPlayer.addEventListener('ended', () => {
+      let next = currentIndex + 1;
+      if (next >= songData.length) next = 0;
+      loadSong(next);
+      audioPlayer.play();
+    });
+
+    mainPlayBtn.addEventListener('click', togglePlay);
+
+    document.getElementById('prev-btn').addEventListener('click', () => {
+      initAudioContext();
+      let prev = currentIndex - 1;
+      if (prev < 0) prev = songData.length - 1;
+      loadSong(prev);
+      audioPlayer.play();
+    });
+
+    document.getElementById('next-btn').addEventListener('click', () => {
+      initAudioContext();
+      let next = currentIndex + 1;
+      if (next >= songData.length) next = 0;
+      loadSong(next);
+      audioPlayer.play();
+    });
+
+    songCards.forEach((card) => {
+      card.addEventListener('click', () => {
+        initAudioContext();
+        const idx = parseInt(card.getAttribute('data-index'));
+        if (currentIndex === idx) {
+          togglePlay();
+        } else {
+          loadSong(idx);
+          audioPlayer.play();
+        }
+      });
+    });
+
+    loadSong(currentIndex);
+  </script>
+
+</body>
+</html>

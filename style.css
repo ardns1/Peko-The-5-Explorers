@@ -1,0 +1,227 @@
+/* RESET & BASE STYLES */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: #0b130e;
+  color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* NAVBAR DESKTOP */
+header {
+  padding: 20px 40px;
+}
+
+nav {
+  background: rgba(42, 54, 46, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 12px 30px;
+  border-radius: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: #d4af37;
+  white-space: nowrap;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 25px;
+}
+
+.nav-links a {
+  color: #d1d5db;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  transition: 0.3s;
+  white-space: nowrap;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: #d4af37;
+}
+
+.search-icon {
+  color: #d1d5db;
+  cursor: pointer;
+}
+
+/* MAIN CONTAINER */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 40px;
+  flex: 1;
+  width: 100%;
+}
+
+.page-title {
+  text-align: center;
+  font-family: 'Cinzel', serif;
+  font-size: 28px;
+  letter-spacing: 2px;
+  color: #d4af37;
+  margin-bottom: 5px;
+}
+
+.page-subtitle {
+  text-align: center;
+  font-size: 12px;
+  color: #a1a1a1;
+  margin-bottom: 30px;
+}
+
+/* BUTTON */
+.btn {
+  display: inline-block;
+  background-color: #d4af37;
+  color: #0b130e;
+  padding: 10px 24px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background-color: #f1c40f;
+}
+
+/* CARDS COMMON */
+.card {
+  background-color: #121e19;
+  border-radius: 12px;
+  border: 1px solid #1a2c25;
+  padding: 20px;
+}
+
+/* SOUNDTRACK PAGE (DESKTOP / LAPTOP) */
+.songs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 kolom sejajar di laptop */
+  gap: 15px;
+  width: 100%;
+}
+
+
+/* ===================================================
+   RESPONSIVE STYLES (KHUSUS TAMPILAN HP / TABLET)
+   =================================================== */
+@media (max-width: 768px) {
+  /* Header & Navbar HP */
+  header {
+    padding: 10px 15px;
+  }
+
+  nav {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 15px;
+    border-radius: 20px;
+  }
+
+  .nav-links {
+    width: 100%;
+    overflow-x: auto; /* Bisa digeser / scroll samping jika terlalu panjang */
+    justify-content: flex-start;
+    gap: 15px;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Sembunyikan scrollbar agar nav tetap bersih */
+  .nav-links::-webkit-scrollbar {
+    display: none;
+  }
+
+  .search-icon {
+    display: none;
+  }
+
+  /* Container */
+  .container {
+    padding: 15px;
+  }
+
+  .page-title {
+    font-size: 22px;
+  }
+
+  .page-subtitle {
+    font-size: 11px;
+    margin-bottom: 20px;
+  }
+
+  /* 1. Home / Cover Page */
+  .hero-section {
+    padding: 30px 20px !important;
+    height: auto !important;
+    min-height: 400px;
+  }
+
+  .hero-title {
+    font-size: 24px !important;
+  }
+
+  .hero-desc {
+    font-size: 12px !important;
+  }
+
+  /* 2. About Page */
+  .about-grid {
+    grid-template-columns: 1fr !important; /* Stack ke bawah */
+  }
+
+  .poster-box {
+    height: 250px !important;
+  }
+
+  /* 3. Soundtrack Page */
+  .player-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px !important;
+  }
+
+  .waveform {
+    width: 100%;
+  }
+
+  .songs-grid {
+    grid-template-columns: repeat(2, 1fr) !important; /* Switch ke 2 kolom di HP */
+  }
+
+  /* 4. Character Page */
+  .char-grid {
+    grid-template-columns: repeat(2, 1fr) !important; /* Dari 6 kolom jadi 2 kolom di HP */
+  }
+
+  /* 5. Gallery Page */
+  .gallery-layout {
+    grid-template-columns: 1fr !important; /* Stack ke bawah */
+  }
+
+  .main-preview {
+    min-height: 200px !important;
+  }
+}
