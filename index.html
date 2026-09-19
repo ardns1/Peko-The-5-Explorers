@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Peko & The 5 Explorers - Home</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    /* 1. RESET & BACKGROUND BODY */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      width: 100%;
+      min-height: 100vh;
+      background: url("img/back.jpeg") no-repeat center center / cover;
+      position: relative;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow-x: hidden;
+    }
+
+    /* Overlay Gelap */
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(15, 10, 10, 0.8) 100%);
+      z-index: 1;
+    }
+
+    /* Memastikan Teks & Navigasi Berada di Atas Overlay */
+    header, .container {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* 2. HERO CONTENT */
+    .hero-section {
+      position: relative;
+      height: 80vh;
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      padding: 0 60px;
+    }
+
+    .hero-content {
+      max-width: 450px;
+    }
+
+    .hero-subtitle-top {
+      color: #d4af37;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 2px;
+    }
+
+    .hero-title {
+      font-size: 32px;
+      line-height: 1.2;
+      margin: 15px 0;
+      font-family: 'Cinzel', serif;
+    }
+
+    .hero-subtitle-bottom {
+      color: #e5c158;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .hero-desc {
+      font-size: 12px;
+      color: #b0b8b4;
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <nav>
+      <div class="logo">PEKO & THE 5 EXPLORERS</div>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">HOME</a></li>
+        <li><a href="about.html">ABOUT FILM</a></li>
+        <li><a href="ost.html">SOUNDTRACK</a></li>
+        <li><a href="character.html">CHARACTERS</a></li>
+        <li><a href="gallery.html">GALLERY</a></li>
+      </ul>
+      <div class="search-icon">🔍</div>
+    </nav>
+  </header>
+
+  <div class="container">
+    <section class="hero-section">
+      <div class="hero-content">
+        <span class="hero-subtitle-top">DORAEMON</span>
+        <h1 class="hero-title">PETUALANGAN NOBITA DI DUNIA AJAIB</h1>
+        <div class="hero-subtitle-bottom">PEKO DAN LIMA PENJELAJAH</div>
+        <p class="hero-desc">
+          Sebuah petualangan seru Nobita dan teman-temannya di dunia ajaib bersama Peko, 
+          anjing pintar misterius, untuk menemukan harta karun tersembunyi.
+        </p>
+        <a href="character.html" class="btn">Character</a>
+      </div>
+    </section>
+  </div>
+
+</body>
+</html>
