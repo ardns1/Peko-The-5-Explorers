@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About The Film</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .about-grid {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 30px;
+    }
+
+    .poster-box {
+      border-radius: 12px;
+      overflow: hidden;
+      height: 100%;
+    }
+
+    .poster-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .about-content {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    .info-item {
+      background-color: #121e19;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+
+    .info-label {
+      color: #d4af37;
+      font-weight: 700;
+      margin-bottom: 5px;
+      font-size: 11px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <nav>
+      <div class="logo">PEKO & THE 5 EXPLORERS</div>
+      <ul class="nav-links">
+        <li><a href="index.html">HOME</a></li>
+        <li><a href="about.html"class="active">ABOUT FILM</a></li>
+        <li><a href="ost.html">SOUNDTRACK</a></li>
+        <li><a href="character.html">CHARACTERS</a></li>
+        <li><a href="gallery.html">GALLERY</a></li>
+      </ul>
+      <v>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1 class="page-title">ABOUT THE FILM</h1>
+    <p class="page-subtitle">Kisah dunia, cerita, dan petualangan di balik film</p>
+
+    <div class="about-grid">
+      <div class="poster-box">
+        <img src="img/back.jpeg" alt="Poster Film">
+      </div>
+
+      <div class="about-content">
+        <div class="card">
+          <h3 style="color: #d4af37; margin-bottom: 10px; font-size: 16px;">PETUALANGAN DIMULAI</h3>
+          <p style="font-size: 12px; color: #b0b8b4; line-height: 1.6;">
+            Kisah bermula saat Nobita menemukan seekor anjing serangga misterius bernama Peko yang mengarahkan mereka pada kerajaan di dunia paralel. Mereka bertualang untuk menemukan harta karun serta menyelamatkan kerajaan.
+          </p>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">DIRECTOR</div>
+            <div>Kouzou Kusuba</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">RELEASE</div>
+            <div>8 Maret 2014</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">GENRE</div>
+            <div>• Adventure<br>• Fantasy<br>• Comedy</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">DURATION</div>
+            <div>109 menit</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
